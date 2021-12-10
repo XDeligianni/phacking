@@ -10,13 +10,13 @@ output:
 
 ## A White Hat’s Guide to P-Hacking
 
-### Dr. Xeni Deligianni- University of Basel-xeni.deligianni@unibas.ch
+### Dr. Xeni Deligianni- University of Basel
+xeni.deligianni@unibas.ch
+https://github.com/XDeligianni
 
-## This tutorial is released under a CC-BY license.
-
-We have two data distributions, one the **controls** and one a distribution that we want to compare to the control.
-In real scientific life this could be the quantitative values of a controlled group, let's call them **qmr** and
-respective values of a different group e.g. patients with a certain condition.
+Imagine, we have two data distributions, one the **controls** and one a distribution that we want to compare to the control.
+This could be the quantitative values of a volunteers group (controls="ctrl"), let's call them **qmr** and
+the respective values of a different group e.g. patients ("pat") with a certain condition.
 
 Let's assume for now that the distributions are **normal** Gaussian distributions. So let's assume we checked the distributions.
 And let' s assume, that BEFORE starting our analysis, we have a **hypothesis** that in disease presence T42 values are increased.
