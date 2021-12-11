@@ -1,6 +1,7 @@
 # phacking
-White hat' s guide to phacking (MRI together Dec 21)
-# Dr Xeni Deligianni-xenideligianni.com
+
+# White hat' s guide to phacking (MRI together Dec 21)
+Dr. Xeni Deligianni-xenideligianni.com
 
 This tutorial was created for the mritogether.com workshop-December 2021
 
