@@ -1,10 +1,12 @@
 # phacking
 
-# White hat' s guide to phacking (MRI together Dec 21)
+# White hat' s guide to phacking (MRI together December 21)
 
-Dr. Xeni Deligianni-xenideligianni.com
+https://mritogether.github.io/
 
-This tutorial was created for the mritogether.com workshop-December 2021
+Tutorial by Dr. Xeni Deligianni-xenideligianni.com
+
+This tutorial was created for the **mritogether** workshop.
 
 You can run it from here: https://mybinder.org/v2/gh/XDeligianni/phacking/HEAD?labpath=pHacking.ipynb
 
@@ -12,8 +14,8 @@ Or download and run the files in Rstudio.
 
 It is meant as a guide to commonly made misconception and misuse of statistics and specifically t-test in MR research.
 
-This is a general overview, not a statistics tutorial.
+This is a general overview of typical misconceptions, not a statistics tutorial.
 
 The motivation was to show what can happen when we blindly apply statistics. 
 
-Small mathematical mistakes are possible. Please contact the authors if you find any!
+
