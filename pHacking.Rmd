@@ -288,6 +288,7 @@ abline(h=0.0,col="red")
 
 ```
 ### Trap 3: Just one more experiment then!It almost looks good. Let's repeat it. Trap of adding data on marginal distributions. 
+
 ```{r echo= FALSE}
 load('Adding_values.RData')
 d.extra<-d.exp_s
@@ -416,6 +417,7 @@ lines(p_adjusted,lty=2)
 ### Be ware of one-sided tests,
 
 ###Check the assumptions: (different variation, reaching normality)
+
 ```{r echo= FALSE}
 load('Adding_values.RData')
 boxplot(qmr~subj,data=d.exp)
