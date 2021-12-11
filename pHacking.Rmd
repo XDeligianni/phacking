@@ -74,11 +74,11 @@ ggplot(data = d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()
 
 ```
 
-## So what's next? Whar result would we get from a t-test?
+## So what's next? What result would we get from a t-test?
 
 What would we get by testing whether there is a difference in these 2 distributions and if the difference is different than zero.
 And let's see what would happen if we wouldn't have 1000 samples for each distribution, but less. 
-Try to change the nr_s and plot. 
+Try to change the **nr_s** and plot. 
 
 ```{r echo = FALSE}
 load('New_Data.RData')
