@@ -8,18 +8,18 @@ output:
 
 # MRI-Together 2021-https://mritogether.github.io/
 
-## A White Hat’s Guide to P-Hacking
+## A White Hat’s Guide to p-Hacking
 
 ### Dr. Xeni Deligianni- University of Basel
 xeni.deligianni@unibas.ch
 https://github.com/XDeligianni
 
 Imagine, we have two data distributions, one the **controls** and one a distribution that we want to compare to the control.
-This could be the quantitative values of a volunteers group (controls="ctrl"), let's call them **qmr** and
+This could be the quantitative values of a volunteers' group (controls="ctrl"), let's call them **qmr** and
 the respective values of a different group e.g. patients ("pat") with a certain condition.
 
 Let's assume for now that the distributions are **normal** Gaussian distributions. So let's assume we checked the distributions.
-And let' s assume, that BEFORE starting our analysis, we have a **hypothesis** that in disease presence T42 values are increased.
+And let' s assume, that BEFORE starting our analysis, we have a **hypothesis** that in disease presence qmr values are increased.
 And let's imagine we have estimated that we should measure and we measured under identical and ideal conditions **50 healthy controls** and **50 patients**.
 
 ## Let' s agree on some definitions first
@@ -141,6 +141,7 @@ library(effsize)
 # Randomly choose number of samples (1000/50/25/15/5) 
 nr_s<-5#TRY TO CHANGE THIS NUMBER
 #Later you can also go ahead and modify the mean values and study the effect
+set.seed(1000)
 qmr <-c(rnorm(nr_s, mean=25.5, sd=10),rnorm(nr_s, mean=34.2, sd=10))
 qmr<-c(qmr,qmr[1:nr_s]-qmr[(nr_s+1):(2*nr_s)])
 subj <- c(rep('ctrl',nr_s),rep('pat',nr_s),rep("diff",nr_s))
@@ -439,17 +440,12 @@ c(res1$p.value,res2$p.value,res3$p.value)
 ```
 
 ##References
-https://www.youtube.com/watch?v=HDCOUXE3HMM
-Cambell book             
-##how to hack tutorial nicolas
+```{r  echo=FALSE}
+mybib <- RefManageR::ReadBib("pHacking.bib", check = FALSE) 
+mybib
 
-```{r setup}
-## set global chunk options: all images will be 7x5 inches
-knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
-options(digits = 4)
+
 ```
 
-I encourage you to watch:
-The dance of p-values: https://www.youtube.com/watch?v=5OL1RqHrZQ8
-by Geoff Cumming who is also a presenter
+
 
