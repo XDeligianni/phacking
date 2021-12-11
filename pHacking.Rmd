@@ -14,27 +14,31 @@ output:
 xeni.deligianni@unibas.ch
 https://github.com/XDeligianni
 
-Imagine, we have two data distributions, one the **controls** and one a distribution that we want to compare to the control.
+Imagine, we have two data distributions, one the **controls** and one a distribution that we want to compare to the controls.
 This could be the quantitative values of a volunteers' group (controls="ctrl"), let's call them **qmr** and
 the respective values of a different group e.g. patients ("pat") with a certain condition.
 
-Let's assume for now that the distributions are **normal** Gaussian distributions. So let's assume we checked the distributions.
-And let' s assume, that BEFORE starting our analysis, we have a **hypothesis** that in disease presence qmr values are increased.
-And let's imagine we have estimated that we should measure and we measured under identical and ideal conditions **50 healthy controls** and **50 patients**.
+Let's assume for now that the distributions are **normal** Gaussian distributions. 
+So let's assume we checked the distributions and that BEFORE starting our analysis, we have a **hypothesis** that in disease presence qmr values are increased.
+And let's imagine we have estimated that we should measure and we measured under identical and ideal conditions **nr_s healthy controls** and **nr_s patients**.
 
 ## Let' s agree on some definitions first
 
-**$\alpha$**: Significance level.A p-value below this will lead to the null hypothesis being rejected.
+**$\alpha$**: Significance level.
+
+**p-value**:the probability of obtaining the observed difference, or one more extreme, if the null hypothesis is true. A p-value below **$\alpha$** will lead to the null hypothesis being rejected.
 
 ## Ready? Let's create some fictional data. 
 
 Let's create two perfectly **normal distributions**. One with **mean** 40 and **standard deviation** (sd) 5 and one with mean 10 and standard deviation 2. 
 And let's visualize at their distributions, as well as the distribution of their difference.
+We start with 1000 samples for each ditribution.
 
 ```{r echo= FALSE}
 library(ggplot2)# A great library for visualization
 library(viridis)#colorblind accessible
 
+#set.seed(2)#example, has to be set to produce same random distributions
 #qmr <-c(rnorm(1000, mean=10, sd=5),rnorm(1000, mean=40, sd=5))
 #qmr<-c(qmr,qmr[1001:2000]-qmr[1:1000])
 load('New_Data.RData')
@@ -55,10 +59,11 @@ ggplot(d.exp,aes(x=qmr,fill =subj)) +
 
 ## That looks clear. Doesn't it? Let's also look at the boxplot visualization.
 
-```{r message = FALSE}
+```{r echo = FALSE}
 library(ggplot2)# A great library for visualization
 library(viridis)
 load('New_Data.RData')
+##set.seed(2)
 #qmr <-c(rnorm(1000, mean=10, sd=5),rnorm(1000, mean=40, sd=5))
 #subj <- c(rep("ctrl",1000),rep("pat",1000),rep("diff",1000))
 #d.exp <- data.frame(qmr,subj)
@@ -68,12 +73,16 @@ ggplot(data = d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()
 #colorblind accessible colors
 
 ```
-## So what's next? How likely is that this difference is 0.  
-What would we get by testing whether there is a difference in these 2 distributions. 
-Having all our assumptions, most of us would go for a t-test.
-```{r message = FALSE}
-load('New_Data.RData')
 
+## So what's next? Whar result would we get from a t-test?
+
+What would we get by testing whether there is a difference in these 2 distributions and if the difference is different than zero.
+And let's see what would happen if we wouldn't have 1000 samples for each distribution, but less. 
+Try to change the nr_s and plot. 
+
+```{r echo = FALSE}
+load('New_Data.RData')
+#set.seed(2)
 #qmr <-c(rnorm(1000, mean=10, sd=5),rnorm(1000, mean=40, sd=5))
 #subj <- c(rep("ctrl",1000),rep("pat",1000),rep("diff",1000))
 #d.exp <- data.frame(qmr,subj)
@@ -96,6 +105,7 @@ abline(h=0.05)
 ```
 
 ###So let's sum up and continue
+
 ```{r echo= FALSE}
 library(ggplot2)# A great library for visualization
 library(viridis)
