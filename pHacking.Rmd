@@ -20,7 +20,7 @@ the respective values of a different group e.g. patients ("pat") with a certain 
 
 Let's assume for now that the distributions are **normal** Gaussian distributions. 
 So let's assume we checked the distributions and that BEFORE starting our analysis, we have a **hypothesis** that in disease presence qmr values are increased.
-And let's imagine we have estimated that we should measure and we measured under identical and ideal conditions **nr_s healthy controls** and **nr_s patients**.
+And let's imagine we have estimated that we should measure and we measured under identical and ideal conditions **nr_s healthy controls** and **nr_s patients**. We consider these independent measurements.
 
 ## Let' s agree on some definitions first
 
@@ -86,8 +86,8 @@ load('New_Data.RData')
 #qmr <-c(rnorm(1000, mean=10, sd=5),rnorm(1000, mean=40, sd=5))
 #subj <- c(rep("ctrl",1000),rep("pat",1000),rep("diff",1000))
 #d.exp <- data.frame(qmr,subj)
-# Randomly choose number of samples (1000/50/25/15/5)
 
+# Experiment by choosing different number of samples (1000/50/25/15/5)for each distribution
 nr_s<-4
 
 p_series<-vector()
@@ -105,12 +105,14 @@ abline(h=0.05)
 ```
 
 ###So let's sum up and continue
+Let's look at one of the subdatasets with 8 samples per distribution
 
 ```{r echo= FALSE}
 library(ggplot2)# A great library for visualization
 library(viridis)
 library(ggpubr)
 load('New_Data_sub.RData')
+#This dataset contains 8 samples of each distribution
 
 ####### Histograms
 x_p<-d.exp_sub[d.exp_sub$subj=='pat',]$qmr
@@ -120,36 +122,40 @@ bw_c <- 2 * IQR(x) / length(x)^(1/3)#decide for the nr of bins-Friedman-Diaconis
 
 ####### Histograms
 a<-ggplot(d.exp_sub,aes(x=qmr,fill =subj)) + 
-  geom_histogram(binwidth = bw_p,alpha=0.5,position='identity')+scale_fill_viridis_d()
-b<-ggplot(d.exp_sub[d.exp_sub$subj=="diff",],aes(x=qmr,fill =subj)) + 
-  geom_histogram(binwidth = bw_p,alpha=0.5,position='identity')+scale_fill_viridis_d()
+  geom_histogram(binwidth=5,alpha=0.5,position='identity')+scale_fill_viridis_d()
 ####### Boxplots
-c<-ggplot(data = d.exp_sub,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()
+b<-ggplot(data = d.exp_sub,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()
 
-ggarrange(a, b,c, labels = c("A","B","C"),
-                    ncol = 2, nrow = 2)
+ggarrange(a, b, labels = c("A","B"),
+                    ncol = 2, nrow = 1)
 #### t-test
-t.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr, paired = TRUE,
+t.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
 ```
-### But what if we don't have 1000 samples or 1000 representative samples?
+### But what if the differences were less clear?
 
 ## **Trap Nr. 1**: Be real! 5 data points is not 5000
-Topic 1: The number of samples is important
+
+Topic 1: The **number of samples** is important.
 What if we have 15 samples of some less different data. Let's get them & repeat the steps
 
 p-values change but our difference is still constantly higher than 0. 
 ## But what if things are not so clear?
-Let's modify bring the mean values closer and increase the standard deviation.
-Keeping the assumptions for t-test we keep standard deviation the same.
+
+Let's change distributions, bring the mean values closer and increase the standard deviation.
+Keeping the assumptions for t-test, we keep standard deviation the same.
+
+Here, you can try again to change the number of samples (nr_s) of each distribution and observe the effect:
+1) on the  distributions, 2) on the t-test performed once.
 
 ```{r echo= FALSE}
 library(ggplot2)# A great library for visualization
 library(viridis)
 library(ggpubr)
 library(effsize)
+
 # Randomly choose number of samples (1000/50/25/15/5) 
-nr_s<-5#TRY TO CHANGE THIS NUMBER
+nr_s<-5 #TRY TO CHANGE THIS NUMBER
 #Later you can also go ahead and modify the mean values and study the effect
 set.seed(1000)
 qmr <-c(rnorm(nr_s, mean=25.5, sd=10),rnorm(nr_s, mean=34.2, sd=10))
@@ -173,11 +179,14 @@ c<-ggplot(data = d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplo
 ggarrange(a, b,c, labels = c("A","B","C"),
                     ncol = 2, nrow = 2)
 #### t-test
-t.test(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr, paired = TRUE,
+t.test(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
 
 cohen.d(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr)
 ```
+So let's draw different number of samples **nr_s** (from the bigger normal distribution) and let's look at the p_value.
+Let's also look how the test result change, if we draw again nr_s new samples!
+
 ```{r echo= FALSE}
 library(effsize)
 load('Difficult_Data.RData')
@@ -189,7 +198,7 @@ for (i in 1:500) {
   sample_rows_ctrl<-sample(nrow(d.exp[d.exp$subj=="ctrl",]),nr_s)
   sample_rows_pat<-1000+sample(nrow(d.exp[d.exp$subj=="pat",]),nr_s)
   d.exp_sub<-rbind(d.exp[sample_rows_ctrl,],d.exp[sample_rows_pat,])
-  p_Res<-t.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr, paired = TRUE,
+  p_Res<-t.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
   rcohen<-cohen.d(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr)
   p_series [i]<-p_Res$p.value
@@ -201,26 +210,28 @@ abline(h=0.05,col="red")
 hist(p_series,breaks=30)
 abline(v=0.05,col="red")
 plot(cohenD)
-
+boxplot(qmr~subj,data=d.exp)
+abline(h=0.0,col="red")
 ```
 ### What can we do?
 
-Decide in advance the sample size we need! If we don' t know maybe it is an exploratory analysis after all
-
-###Clinical vs statistical significance (to the slides and back)
+Decide in advance the sample size we need! If we don' t know maybe it is an exploratory analysis after all.
 
 ## **Trap Nr. 2**: Step 1: Look at your data
 
 ### Not all datasets are normal, t-test is not for everything!
 The same way as mean is not always the proper statistic.
+Let's now look at some different distributions. 
+Let's start with 1000 samples and try to reduce it!
 
 ```{r echo= FALSE}
 library(ggplot2)# A great library for visualization
 library(viridis)
 library(ggpubr)
 library(effsize)
-# Randomly choose 50/25/15/5 samples
+# Randomly choose 1000/5000/100
 nr_s<-1000
+set.seed(2000)
 # Generate a random negative binomial distribution
 qmr <-c(15+250*rexp(1000,25),35-250*rexp(1000,25))
 qmr<-c(qmr,qmr[1:nr_s]-qmr[(nr_s+1):(2*nr_s)])
@@ -234,57 +245,21 @@ bw_c <- 2 * IQR(x_c) / length(x_c)^(1/3)#decide for the nr of bins-Friedman-Diac
 
 ####### Histograms
 a<-ggplot(d.exp,aes(x=qmr,fill =subj)) + 
-  geom_histogram(alpha=0.5,position='identity')+scale_fill_viridis_d()
+  geom_histogram(binwidth=bw_p,alpha=0.5,position='identity')+scale_fill_viridis_d()
 b<-ggplot(d.exp[d.exp$subj=="diff",],aes(x=qmr,fill =subj)) + 
-  geom_histogram(alpha=0.5,position='identity')+scale_fill_viridis_d()
+  geom_histogram(binwidth=bw_p,alpha=0.5,position='identity')+scale_fill_viridis_d()
 ####### Boxplots
 c<-ggplot(data = d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()
 
 ggarrange(a, b,c, labels = c("A","B","C"),
                     ncol = 2, nrow = 2)
 #### t-test
-t.test(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr, paired = TRUE,
+t.test(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95)
-wilcox.test(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr, paired = TRUE,alternative = "two.sided")
-
+wilcox.test(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr, paired = FALSE,alternative = "two.sided")
 ```
 
-
-
-```{r echo= FALSE}
-library(ggplot2)# A great library for visualization
-library(viridis)
-library(ggpubr)
-library(effsize)
-# Randomly choose number of samples (1000/50/25/15/5) 
-nr_s<-10
-#Later you can also go ahead and modify the mean values and study the effect
-qmr <-c(rnorm(nr_s, mean=25, sd=8),rnorm(nr_s, mean=35, sd=8))
-qmr<-c(qmr,qmr[1:nr_s]-qmr[(nr_s+1):(2*nr_s)])
-subj <- c(rep('ctrl',nr_s),rep('pat',nr_s),rep("diff",nr_s))
-d.exp <- data.frame(qmr,subj)
-####### Histograms
-x_p<-d.exp[d.exp$subj=='pat',]$qmr
-bw_p <- 2 * IQR(x_p) / length(x_p)^(1/3)#decide for the nr of bins-Friedman-Diaconis rule
-x_c<-d.exp[d.exp$subj=='ctrl',]$qmr
-bw_c <- 2 * IQR(x_c) / length(x_c)^(1/3)#decide for the nr of bins-Friedman-Diaconis rule
-
-####### Histograms
-a<-ggplot(d.exp,aes(x=qmr,fill =subj)) + 
-  geom_histogram(binwidth = 3,alpha=0.5,position='identity')+scale_fill_viridis_d()
-b<-ggplot(d.exp[d.exp$subj=="diff",],aes(x=qmr,fill =subj)) + 
-  geom_histogram(binwidth = 3,alpha=0.5,position='identity')+scale_fill_viridis_d()
-####### Boxplots
-c<-ggplot(data = d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()
-
-ggarrange(a, b,c, labels = c("A","B","C"),
-                    ncol = 2, nrow = 2)
-#### t-test
-t.test(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr, paired = TRUE,
-alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
-
-cohen.d(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr)
-```
+Let's load an example of these distributions, and experiment with taking samples **nr_s** and observe the effect.
 
 ```{r echo= FALSE}
 load('Not_normal_Distr.RData')
@@ -308,7 +283,8 @@ abline(h=0.05,col="red")
 hist(p_series,breaks=30)
 abline(v=0.05,col="red")
 plot(cohenD)
-
+boxplot(qmr~subj,data=d.exp)
+abline(h=0.0,col="red")
 
 ```
 ### Trap 3: Just one more experiment then!It almost looks good. Let's repeat it. Trap of adding data on marginal distributions. 
@@ -323,17 +299,20 @@ a<-ggplot(d.exp_w_Points,aes(x=qmr,fill =subj)) +
 b<-ggplot(d.exp_w_Points[d.exp_w_Points$subj=="diff",],aes(x=qmr,fill =subj)) + 
   geom_histogram(binwidth = 3,alpha=0.5,position='identity')+scale_fill_viridis_d()
 ####### Boxplots
-c<-ggplot(data =d.exp_w_Points,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()
+c<-ggplot(data =d.exp_w_Points,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()+ggtitle("with 2 extra points")
 
-d<-ggplot(data =d.exp_limit,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()
+d<-ggplot(data =d.exp_limit,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()+ggtitle("bef the 2 extra points")
 
 ggarrange(a, b,c, d,labels = c("A","B","C","D"),
                     ncol = 2, nrow = 2)
 
-res_w_Points<-t.test(d.exp_w_Points[d.exp_w_Points$subj=="pat",]$qmr, d.exp_w_Points[d.exp_w_Points$subj=="ctrl",]$qmr, paired = TRUE,
+res_w_Points<-t.test(d.exp_w_Points[d.exp_w_Points$subj=="pat",]$qmr, d.exp_w_Points[d.exp_w_Points$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
-res_wo_Points<-t.test(d.exp_limit[d.exp_limit$subj=="pat",]$qmr, d.exp_limit[d.exp_limit$subj=="ctrl",]$qmr, paired = TRUE,
+res_wo_Points<-t.test(d.exp_limit[d.exp_limit$subj=="pat",]$qmr, d.exp_limit[d.exp_limit$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
+
+print(c("p-value with 2 extra points",res_w_Points$p.value))
+print(c("p-value without points",res_wo_Points$p.value))
 
 ```
 
@@ -347,25 +326,26 @@ a<-ggplot(d.exp_w_Outl,aes(x=qmr,fill =subj)) +
 b<-ggplot(d.exp_w_Outl[d.exp_w_Outl$subj=="diff",],aes(x=qmr,fill =subj)) + 
   geom_histogram(binwidth = 3,alpha=0.5,position='identity')+scale_fill_viridis_d()
 ####### Boxplots
-c<-ggplot(data =d.exp_w_Outl,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()
+c<-ggplot(data =d.exp_w_Outl,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()+ggtitle("With Outliers")
 
-d<-ggplot(data =d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()
+d<-ggplot(data =d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()+ggtitle("Without Outliers")
 
 ggarrange(a, b,c, d,labels = c("A","B","C","D"),
                     ncol = 2, nrow = 2)
 
 d.extra<-d.exp_w_Outl
 
-#t.test(d.exp_limit[d.exp_limit$subj=="pat",]$qmr, d.exp_limit[d.exp_limit$subj=="ctrl",]$qmr, paired = TRUE,
+#t.test(d.exp_limit[d.exp_limit$subj=="pat",]$qmr, d.exp_limit[d.exp_limit$subj=="ctrl",]$qmr, paired = FALSE,
 #alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
  
 res_wo_Outlier<-t.test(d.exp[d.exp$subj=="pat",]$qmr, d.exp[d.exp$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
 
-res_w_Outlier<-t.test(d.exp_w_Outl[d.exp_w_Outl$subj=="pat",]$qmr, d.exp_w_Outl[d.exp_w_Outl$subj=="ctrl",]$qmr, paired = TRUE,
+res_w_Outlier<-t.test(d.exp_w_Outl[d.exp_w_Outl$subj=="pat",]$qmr, d.exp_w_Outl[d.exp_w_Outl$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
 
-
+print(c("p-value wo Outliers:",res_wo_Outlier$p.value,res_w_Outlier$p.value))
+print(c("p-value with Outliers:",res_w_Outlier$p.value))
 ```
 
 
@@ -432,12 +412,14 @@ plot(p_no_corr,ylim=c(0,1.2))
 lines(p_adjusted,lty=2)
 ```
 
-## **Trap Nr. 5**: TODO POST HOC hypothesis
+## **Trap Nr. 5**: POST HOC hypothesis
 ### Be ware of one-sided tests,
 
 ###Check the assumptions: (different variation, reaching normality)
 ```{r echo= FALSE}
 load('Adding_values.RData')
+boxplot(qmr~subj,data=d.exp)
+
 res1<-t.test(d.exp_limit[d.exp_limit$subj=="pat",]$qmr, d.exp_limit[d.exp_limit$subj=="ctrl",]$qmr, paired = TRUE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
 res2<-t.test(d.exp_limit[d.exp_limit$subj=="pat",]$qmr, d.exp_limit[d.exp_limit$subj=="ctrl",]$qmr, paired = TRUE,
