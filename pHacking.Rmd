@@ -159,7 +159,7 @@ library(ggpubr)
 library(effsize)
 
 # Randomly choose number of samples (1000/50/25/15/5) 
-nr_s<-1000 #TRY TO CHANGE THIS NUMBER
+nr_s<-10 #TRY TO CHANGE THIS NUMBER
 #Later you can also go ahead and modify the mean values and study the effect
 set.seed(1000)
 qmr <-c(rnorm(nr_s, mean=25.5, sd=10),rnorm(nr_s, mean=34.2, sd=10))
@@ -178,7 +178,7 @@ a<-ggplot(d.exp,aes(x=qmr,fill =subj)) +
 b<-ggplot(d.exp[d.exp$subj=="diff",],aes(x=qmr,fill =subj)) + 
   geom_histogram(binwidth = 3,alpha=0.5,position='identity')+scale_fill_viridis_d()
 ####### Boxplots
-c<-ggplot(data = d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()
+c<-ggplot(data = d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()+geom_point()#+geom_jitter()#jitter for fewer points
 
 ggarrange(a, b,c, labels = c("A","B","C"),
                     ncol = 2, nrow = 2)
@@ -306,7 +306,7 @@ abline(h=0.0,col="red")
 ```{r echo= FALSE}
 load('Adding_values.RData')
 d.extra<-d.exp_s
-
+#This way we can add rows to our dataframe
 d.exp_w_Points<-rbind(d.exp_limit,data.frame(qmr=18,subj="ctrl"),data.frame(qmr=40,subj="pat"))
 
 a<-ggplot(d.exp_w_Points,aes(x=qmr,fill =subj)) + 
