@@ -34,7 +34,7 @@ Let's create two perfectly **normal distributions**. One with **mean** 40 and **
 And let's visualize at their distributions, as well as the distribution of their difference.
 We start with 1000 samples for each ditribution.
 
-```{r echo= FALSE}
+```{r echo= FALSE, message= FALSE}
 library(ggplot2)# A great library for visualization
 library(viridis)#colorblind accessible
 
