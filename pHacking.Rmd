@@ -32,7 +32,7 @@ And let's imagine we have estimated that we should measure and we measured under
 
 Let's create two perfectly **normal distributions**. One with **mean** 40 and **standard deviation** (sd) 5 and one with mean 10 and standard deviation 2. 
 And let's visualize at their distributions, as well as the distribution of their difference.
-We start with 1000 samples for each ditribution.
+We start with 1000 samples for each distribution.
 
 ```{r echo= FALSE, message= FALSE}
 library(ggplot2)# A great library for visualization
@@ -89,7 +89,7 @@ load('New_Data.RData')
 #d.exp <- data.frame(qmr,subj)
 
 # Experiment by choosing different number of samples (1000/50/25/15/5)for each distribution
-nr_s<-1000
+nr_s<-5
 
 p_series<-vector()
 for (i in 1:100) {
@@ -159,7 +159,7 @@ library(ggpubr)
 library(effsize)
 
 # Randomly choose number of samples (1000/50/25/15/5) 
-nr_s<-5 #TRY TO CHANGE THIS NUMBER
+nr_s<-1000 #TRY TO CHANGE THIS NUMBER
 #Later you can also go ahead and modify the mean values and study the effect
 set.seed(1000)
 qmr <-c(rnorm(nr_s, mean=25.5, sd=10),rnorm(nr_s, mean=34.2, sd=10))
@@ -454,6 +454,7 @@ c(res.twosided$p.value,res.less$p.value,res.greater$p.value)
 
 ##References
 ```{r  echo=FALSE}
+library(RefManageR)
 mybib <- RefManageR::ReadBib("pHacking.bib", check = FALSE) 
 mybib
 
