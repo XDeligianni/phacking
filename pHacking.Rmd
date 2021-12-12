@@ -269,6 +269,7 @@ print(c("res.wt",res.wt$p.value))
 
 Let's load an example of these distributions, and experiment with taking samples **nr_s** and observe the effect.
 TO DO: Change the "nr_s" and observe the plots
+
 ```{r echo= FALSE}
 load('Not_normal_Distr.RData')
 
