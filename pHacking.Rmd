@@ -134,18 +134,16 @@ res.tt<-t.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj==
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
 
 print(c("p-value",res.tt$p.value))
+#print(res.tt)
 ```
 ### But what if the differences were less clear?
 
 ## **Trap Nr. 1**: Be real! 5 data points is not 5000
 
 Topic 1: The **number of samples** is important.
-What if we have 15 samples of some less different data. Let's get them & repeat the steps
+What if we have 15 samples of some less different data. Let's get them & repeat the steps.
 
-p-values change but our difference is still constantly higher than 0. 
-## But what if things are not so clear?
-
-Let's change distributions, bring the mean values closer and increase the standard deviation.
+So, let's change distributions, bring the **mean values** closer and increase the **standard deviation**.
 Keeping the assumptions for t-test, we keep standard deviation the same.
 
 Here, you can try again to change the number of samples (nr_s) of each distribution and observe the effect:
