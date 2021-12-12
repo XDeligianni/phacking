@@ -455,7 +455,8 @@ c(res.twosided$p.value,res.less$p.value,res.greater$p.value)
 ##References
 ```{r  echo=FALSE, warning= FALSE}
 library(RefManageR)
-mybib <- RefManageR::ReadBib("pHacking.bib", check = FALSE) 
+mybib <- RefManageR::ReadBib("pHacking.bib", check = FALSE)
+BibOptions(check.entries = FALSE, style = "markdown", bib.style = "alphabetic", cite.style = 'alphabetic')
 mybib
 
 
