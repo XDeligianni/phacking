@@ -222,6 +222,7 @@ abline(h=0.0,col="red")
 ### What can we do?
 
 Decide in advance the sample size we need! If we don' t know maybe it is an exploratory analysis after all.
+Use more than the p-value!As a minimum use confidence intervals, not only point estimates!
 
 ## **Trap Nr. 2**: Step 1: Look at your data
 
