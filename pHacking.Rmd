@@ -222,7 +222,7 @@ abline(h=0.0,col="red")
 ### What can we do?
 
 Decide in advance the sample size we need! If we don' t know maybe it is an exploratory analysis after all.
-Use more than the p-value!As a minimum use confidence intervals, not only point estimates!
+Use more than the p-value!As a minimum use **confidence intervals**, not only point estimates!
 
 ## **Trap Nr. 2**: Step 1: Look at your data
 
@@ -240,7 +240,7 @@ library(effsize)
 # TO DO: Randomly choose 1000/5000/100
 nr_s<-1000
 set.seed(2000)
-# Generate a random negative binomial distribution
+# Generate distribution based on an exponential distribution
 qmr <-c(15+250*rexp(1000,25),35-250*rexp(1000,25))
 qmr<-c(qmr,qmr[1:nr_s]-qmr[(nr_s+1):(2*nr_s)])
 subj <- c(rep('ctrl',nr_s),rep('pat',nr_s),rep("diff",nr_s))
@@ -303,10 +303,12 @@ abline(h=0.0,col="red")
 ### Trap 3: Just one more experiment then!It almost looks good. Let's repeat it. Trap of adding data on marginal distributions. 
 
 ```{r echo= FALSE}
+library(ggplot2)
+library(ggpubr)
 load('Adding_values.RData')
 d.extra<-d.exp_s
 #This way we can add rows to our dataframe
-d.exp_w_Points<-rbind(d.exp_limit,data.frame(qmr=18,subj="ctrl"),data.frame(qmr=40,subj="pat"))
+d.exp_w_Points<-rbind(d.exp_limit,data.frame(qmr=18,subj="ctrl"),data.frame(qmr=45,subj="pat"))
 
 a<-ggplot(d.exp_w_Points,aes(x=qmr,fill =subj)) + 
   geom_histogram(binwidth = 3,alpha=0.5,position='identity')+scale_fill_viridis_d()
