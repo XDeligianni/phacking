@@ -36,6 +36,7 @@ We start with 1000 samples for each ditribution.
 
 ```{r echo= FALSE, message= FALSE}
 library(ggplot2)# A great library for visualization
+library(viridisLite)
 library(viridis)#colorblind accessible
 
 #set.seed(2)#example, has to be set to produce same random distributions
