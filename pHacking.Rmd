@@ -149,6 +149,7 @@ Keeping the assumptions for t-test, we keep standard deviation the same.
 
 Here, you can try again to change the number of samples (nr_s) of each distribution and observe the effect:
 1) on the  distributions, 2) on the t-test performed once.
+TO DO: Change the nr_s and observe.
 
 ```{r echo= FALSE}
 library(ggplot2)# A great library for visualization
@@ -191,6 +192,7 @@ print(c("estimate cohend",res.cd$estimate))
 ```
 So let's draw different number of samples **nr_s** (from the bigger normal distribution) and let's look at the p_value.
 Let's also look how the test result change, if we draw again nr_s new samples!
+TO DO: change the nr_s and observe.
 
 ```{r echo= FALSE}
 library(effsize)
@@ -228,6 +230,7 @@ Decide in advance the sample size we need! If we don' t know maybe it is an expl
 The same way as mean is not always the proper statistic.
 Let's now look at some different distributions. 
 Let's start with 1000 samples and try to reduce it!
+TO DO: change the nr_s and observe.
 
 ```{r echo= FALSE}
 library(ggplot2)# A great library for visualization
@@ -328,7 +331,7 @@ print(c("p-value without points",res_wo_Points$p.value))
 ```
 
 ## **Trap Nr. 3**: This one looks wrong. Let's remove it
-##TO DO:post-hoc data selection, Keep adjusting the data collection removing outliers, 1) use different threshold, 2) remove outliers and test till you get you result
+##Topic: post-hoc data selection, Keep adjusting the data collection removing outliers, 1) use different threshold, 2) remove outliers and test till you get you result
 
 ```{r echo= FALSE}
 load('Removing_values.RData')
@@ -426,8 +429,8 @@ lines(p_adjusted,lty=2)
 ## **Trap Nr. 5**: POST HOC hypothesis
 ### Be ware of one-sided tests,
 
-###Check the assumptions: (different variation, reaching normality)
-
+### Check the assumptions: (different variation, reaching normality)
+TO DO: alternate between the 2 datasets
 ```{r echo= FALSE}
 #Option 1
 #load('Adding_values.RData')
