@@ -68,9 +68,9 @@ load('New_Data.RData')
 #qmr <-c(rnorm(1000, mean=10, sd=5),rnorm(1000, mean=40, sd=5))
 #subj <- c(rep("ctrl",1000),rep("pat",1000),rep("diff",1000))
 #d.exp <- data.frame(qmr,subj)
-x<-d.exp[d.exp$subj=='pat',]$qmr
-bw <- 2 * IQR(x) / length(x)^(1/3)#decide for the nr of bins-Friedman-Diaconis rule
+
 ggplot(data = d.exp,mapping = aes(y = qmr,x = subj, fill=subj)) + geom_boxplot()+scale_fill_viridis_d()
+#+geom_jitter()
 #colorblind accessible colors
 
 ```
