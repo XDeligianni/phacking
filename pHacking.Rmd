@@ -314,6 +314,7 @@ library(ggpubr)
 load('Adding_values.RData')
 d.extra<-d.exp_s
 #This way we can add rows to our dataframe
+print(c("nr of ctrls",nrow(d.exp_limit[d.exp_limit$subj=='ctrl',])))
 d.exp_w_Points<-rbind(d.exp_limit,data.frame(qmr=18,subj="ctrl"),data.frame(qmr=45,subj="pat"))
 
 a<-ggplot(d.exp_w_Points,aes(x=qmr,fill =subj)) + 
