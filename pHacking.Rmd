@@ -276,6 +276,10 @@ TO DO: Change the "nr_s" and observe the plots
 
 ```{r echo= FALSE}
 load('Not_normal_Distr.RData')
+library(ggplot2)# A great library for visualization
+library(viridis)
+library(ggpubr)
+library(effsize)
 
 nr_s<-40
 
