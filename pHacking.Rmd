@@ -205,7 +205,7 @@ for (i in 1:100) {
   sample_rows_ctrl<-sample(nrow(d.exp[d.exp$subj=="ctrl",]),nr_s)
   sample_rows_pat<-1000+sample(nrow(d.exp[d.exp$subj=="pat",]),nr_s)
   d.exp_sub<-rbind(d.exp[sample_rows_ctrl,],d.exp[sample_rows_pat,])
-  p_Res<-t.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr, paired = FALSE,
+  p_Res<-t.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr, paired = FALSE,mu=0,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
   rcohen<-cohen.d(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr)
   p_series [i]<-p_Res$p.value
@@ -277,25 +277,30 @@ TO DO: Change the "nr_s" and observe the plots
 ```{r echo= FALSE}
 load('Not_normal_Distr.RData')
 
-nr_s<-4
+nr_s<-40
 
 p_series<-vector()
+p_Wilcox<-vector()
 cohenD<-vector()
+
 for (i in 1:100) {
   sample_rows_ctrl<-sample(nrow(d.exp[d.exp$subj=="ctrl",]),nr_s)
   sample_rows_pat<-1000+sample(nrow(d.exp[d.exp$subj=="pat",]),nr_s)
   d.exp_sub<-rbind(d.exp[sample_rows_ctrl,],d.exp[sample_rows_pat,])
   p_Res<-t.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=FALSE)
+  p_wRes<-wilcox.test(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr, paired = FALSE,
+alternative = "two.sided", conf.level = 0.95,var.equal=FALSE)
   rcohen<-cohen.d(d.exp_sub[d.exp_sub$subj=="pat",]$qmr, d.exp_sub[d.exp_sub$subj=="ctrl",]$qmr)
   p_series [i]<-p_Res$p.value
+  p_Wilcox [i]<-p_wRes$p.value
   cohenD[i]<-rcohen$estimate
 }
 par(mfrow=c(2,2))
 plot(p_series,ylim=c(0,1))
 abline(h=0.05,col="red")
-hist(p_series,breaks=30)
-abline(v=0.05,col="red")
+plot(p_Wilcox,ylim=c(0,1))
+abline(h=0.05,col="red")
 plot(cohenD)
 boxplot(qmr~subj,data=d.exp)
 abline(h=0.0,col="red")
