@@ -139,7 +139,7 @@ abline(h=0.05)
 
 ### But what if the differences were less clear?
 
-## **Trap Nr. 1**: Be real! 5 data points is not 5000
+## **Trap Nr. 1**: Numbers count!
 
 Topic 1: The **number of samples** is important.
 What if we have 15 samples of some less different data. Let's get them & repeat the steps.
@@ -306,7 +306,7 @@ boxplot(qmr~subj,data=d.exp)
 abline(h=0.0,col="red")
 
 ```
-### Trap 3: Just one more experiment then!It almost looks good. Let's repeat it. Trap of adding data on marginal distributions. 
+## **Trap Nr. 3a**:Just one more experiment then!It almost looks good. Let's repeat it. Trap of adding data on marginal distributions. 
 
 ```{r echo= FALSE}
 library(ggplot2)
@@ -339,7 +339,7 @@ print(c("p-value without points",res_wo_Points$p.value))
 
 ```
 
-## **Trap Nr. 3**: This one looks wrong. Let's remove it
+## **Trap Nr. 3b**: This one looks wrong. Let's remove it
 ##Topic: post-hoc data selection, Keep adjusting the data collection removing outliers, 1) use different threshold, 2) remove outliers and test till you get you result
 
 ```{r echo= FALSE}
