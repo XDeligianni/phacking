@@ -344,6 +344,12 @@ print(c("p-value without points",res_wo_Points$p.value))
 
 ```{r echo= FALSE}
 load('Removing_values.RData')
+print(c("nr of ctrls wOutl",nrow(d.exp_w_Outl[d.exp_w_Outl$subj=='ctrl',])))
+print(c("nr of ctrls wo Outl",nrow(d.exp[d.exp$subj=='ctrl',])))
+
+print(c("nr of pats wOutl",nrow(d.exp_w_Outl[d.exp_w_Outl$subj=='pat',])))
+print(c("nr of pats wo Outl",nrow(d.exp[d.exp$subj=='pat',])))
+
 a<-ggplot(d.exp_w_Outl,aes(x=qmr,fill =subj)) + 
   geom_histogram(binwidth = 3,alpha=0.5,position='identity')+scale_fill_viridis_d()
 b<-ggplot(d.exp_w_Outl[d.exp_w_Outl$subj=="diff",],aes(x=qmr,fill =subj)) + 
@@ -367,7 +373,7 @@ alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
 res_w_Outlier<-t.test(d.exp_w_Outl[d.exp_w_Outl$subj=="pat",]$qmr, d.exp_w_Outl[d.exp_w_Outl$subj=="ctrl",]$qmr, paired = FALSE,
 alternative = "two.sided", conf.level = 0.95,var.equal=TRUE)
 
-print(c("p-value wo Outliers:",res_wo_Outlier$p.value,res_w_Outlier$p.value))
+print(c("p-value wo Outliers:",res_wo_Outlier$p.value))
 print(c("p-value with Outliers:",res_w_Outlier$p.value))
 ```
 
